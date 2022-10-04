@@ -1,0 +1,10 @@
+# Install pyspark
+!pip install pyspark
+# Import SparkSession
+from pyspark.sql import SparkSession
+# Create a Spark Session
+spark = SparkSession.builder.master("local[*]").getOrCreate()
+# Check Spark Session Information
+spark
+# Import a Spark function from library
+from pyspark.sql.functions import col
