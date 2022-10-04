@@ -1,0 +1,15 @@
+# install Anaconda3
+!wget -qO ac.sh https://repo.anaconda.com/archive/Anaconda3-2020.07-Linux-x86_64.sh 
+!bash ./ac.sh -b
+
+# a fake google.colab library
+!ln -s /usr/local/lib/python3.6/dist-packages/google \
+       /root/anaconda3/lib/python3.8/site-packages/google
+
+# start jupyterlab, which now has Python3 = 3.8
+!nohup /root/anaconda3/bin/jupyter-lab --ip=0.0.0.0&
+
+# access through ngrok, click the link
+!pip install pyngrok -q
+from pyngrok import ngrok
+print(ngrok.connect(8888))
