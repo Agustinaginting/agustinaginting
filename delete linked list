@@ -1,0 +1,72 @@
+class Node:
+
+	# membangun inisialisasi node objek
+	def __init__(self, data):
+		self.data = data
+		self.next = None
+
+
+class LinkedList:
+
+	# fungsi untuk inisialisasi head
+	def __init__(self):
+		self.head = None
+
+	# fungsi menambahkan node baru di awal
+	def push(self, new_data):
+		new_node = Node(new_data)
+		new_node.next = self.head
+		self.head = new_node
+
+	# diberi refrensi ke daftar head dan kunci
+	# menghapus kemunculan pertama kunci dalam linked list
+	def deleteNode(self, key):
+
+		# simpan node
+		temp = self.head
+
+		# jika  head node memegang kunci untuk dihapus
+		if (temp is not None):
+			if (temp.data == key):
+				self.head = temp.next
+				temp = None
+				return
+
+		# cari kunci yang akan dihapus, lacaknode sebelumnya
+		# previous node perlu diubah menjadi 'prev.next
+		while(temp is not None):
+			if temp.data == key:
+				break
+			prev = temp
+			temp = temp.next
+
+		# jika kunci tidak hadir di linked list
+		if(temp == None):
+			return
+
+		# Unlink node dari linked list
+		prev.next = temp.next
+
+		temp = None
+
+	# fungsi utility untuk melacak LinkedList
+
+	def printList(self):
+		temp = self.head
+		while(temp):
+			print(" %d" % (temp.data)),
+			temp = temp.next
+
+
+# Driver program
+llist = LinkedList()
+llist.push(42)
+llist.push(17)
+llist.push(6)
+llist.push(4)
+
+print("linked list yang dibangun: ")
+llist.printList()
+llist.deleteNode(17)
+print("linkedlist setelah penghapusan")
+llist.printList()
