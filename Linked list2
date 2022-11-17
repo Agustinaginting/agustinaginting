@@ -1,0 +1,128 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
+class LinkedList:
+
+    def __init__(self):
+        self.head = None
+
+    # Insert di awal
+    def insertAtBeginning(self, new_data):
+        new_node = Node(new_data)
+
+        new_node.next = self.head
+        self.head = new_node
+
+    # Insert setelah node
+    def insertAfter(self, prev_node, new_data):
+
+        if prev_node is None:
+            print("diberikan node sebelumnya dalam bentuk linked list.")
+            return
+
+        new_node = Node(new_data)
+        new_node.next = prev_node.next
+        prev_node.next = new_node
+
+    # insert di akhir
+    def insertAtEnd(self, new_data):
+        new_node = Node(new_data)
+
+        if self.head is None:
+            self.head = new_node
+            return
+
+        last = self.head
+        while (last.next):
+            last = last.next
+
+        last.next = new_node
+
+    # Menghapus node
+    def deleteNode(self, position):
+
+        if self.head is None:
+            return
+
+        temp = self.head
+
+        if position == 0:
+            self.head = temp.next
+            temp = None
+            return
+
+        # Menemukan kunci untuk dihapus
+        for i in range(position - 1):
+            temp = temp.next
+            if temp is None:
+                break
+
+        # jika kunci yang dicari tidak hadir
+        if temp is None:
+            return
+
+        if temp.next is None:
+            return
+
+        next = temp.next.next
+
+        temp.next = None
+
+        temp.next = next
+
+    # mencari elemen atau entry
+    def search(self, key):
+
+        current = self.head
+
+        while current is not None:
+            if current.data == key:
+                return True
+
+            current = current.next
+
+        return False
+
+    # Sort the linked list
+    def sortLinkedList(self, head):
+        current = head
+        index = Node(None)
+
+        if head is None:
+            return
+        else:
+            while current is not None:
+                # index points to the node next to current
+                index = current.next
+
+                while index is not None:
+                    if current.data > index.data:
+                        current.data, index.data = index.data, current.data
+
+                    index = index.next
+                current = current.next
+
+    # Print  linked list
+    def printList(self):
+        temp = self.head
+        while (temp):
+            print(str(temp.data) + " ", end="")
+            temp = temp.next
+
+
+if __name__ == '__main__':
+
+    llist = LinkedList()
+    llist.insertAtEnd(42)
+    llist.insertAtBeginning(6)
+    llist.insertAtBeginning(4)
+    llist.insertAfter(llist.head.next, 17)
+    print('linked list yang dibangun:')
+    llist.printList()
+
+    print("\nLinked list setelah penghapusan:")
+    llist.deleteNode(2)
+    llist.printList()
