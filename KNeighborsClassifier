@@ -1,0 +1,71 @@
+# import library
+%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns; sns.set()
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+
+
+#upload data
+from google.colab import files
+uploaded = files.upload()
+
+
+#import data ke dataframe 
+import io
+df = pd.read_csv(io.BytesIO(uploaded['Hasil Clustering Total.xlsx - Cluster Fokus (1).csv']))
+# Dataset is now stored in a Pandas Dataframe
+
+#read data
+df.head()
+
+#tampilkan atribut data
+len(df)
+df['Prodi'].unique()
+
+#melihat missing value
+df.isnull().values.any()
+
+
+#banyak data pada atribut
+pd.value_counts(df.Prodi)
+
+#deskripsi dan data
+df.describe()
+df.info()
+
+#melihat data kosong sekali lagi
+df.isnull().sum()
+
+#plot data
+sns.pairplot(df, hue="Prodi", corner=True, kind='reg')
+
+#bagi data 
+train = df.sample(frac=0.7, random_state=500) # random state is a seed value
+test = df.drop(train.index)
+X_train = train.drop(labels='Prodi', axis=1)
+y_train = train.Prodi
+X_test = test.drop(labels='Prodi', axis=1)
+y_test = test.Prodi
+print(X_train.head(),"\n", y_train.head())
+X_train.shape,X_test.shape
+y_train.shape,y_test.shape
+
+#proses klasifikasi
+import matplotlib.pyplot as plt 
+from sklearn.neighbors import KNeighborsClassifier
+knn = KNeighborsClassifier(n_neighbors=30)
+knn = KNeighborsClassifier(n_neighbors=30)
+knn.fit(X_train,y_train)
+knn.score(X_test,y_test)
+results = knn.predict(X_test)
+print(X_test)
+print(results)
+
+
+
