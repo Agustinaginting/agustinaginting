@@ -1,0 +1,203 @@
+#import library
+! pip install pyMetaheuristic
+! pip install tqdm
+! pip install PyPortfolioOpt
+! pip install solution
+
+#import data saham Lq45
+from google.colab import drive
+drive.mount('/content/drive')
+
+import pandas as pd
+# df = pd.read_csv('drive/MyDrive/Colab Notebooks/lq45_join.csv')
+df = pd.read_csv('drive/MyDrive/Crawling/lq45_join.csv')
+from google.colab import drive
+drive.mount('/content/drive')
+
+#Data Preparation
+company = list(dict.fromkeys(df['company'].tolist()))
+company.sort()
+
+diff = list()
+day = list()
+rate = list()
+for i in range(len(company)):
+  df_1 = df[df['company']==company[i]]
+  for j in range(len(df_1)):
+    day.append(j)
+    if(j==0):
+      diff.append(0)
+      rate.append(0)
+    else:
+      diff.append(df_1.Close.iloc[j]-df_1.Close.iloc[j-1])
+      rate.append((df_1.Close.iloc[j]-df_1.Close.iloc[j-1])/df_1.Close.iloc[j])
+  # close = df_1['Close'].tolist()
+
+  column_name = company[0]
+df[df['company']== column_name]['Date'].tolist()
+
+#Data diubah atau digrupkan berdasarkan tanggal
+date_list = df.groupby('Date').count().reset_index().Date.to_list()
+date_list
+
+#Data diubah sesuai jenis saham
+from tqdm import tqdm
+dlist = list()
+for i in range(len(date_list)):
+  d = dict()
+  d['Date'] = date_list[i]
+  print(date_list[i])
+  for j in tqdm(range(len(company))):
+    try:
+      d[company[j]] = df[(df['Date']==date_list[i]) & (df['company']==company[j])].Close.iloc[0]
+    except:
+      d[company[j]] = None
+  dlist.append(d)
+  # df[(df['Date']==date_list[0]) & (df['company']==company[0])].Close[0]
+
+  #Proses Mean Variance Optimization
+  df_2 = pd.read_csv('drive/MyDrive/Crawling/lq_45_h.csv')
+  new_df_2 = df_2.loc[1364:].reset_index(drop=True).copy()
+new_df_2 = new_df_2[:-1]
+new_df_2 = new_df_2.set_index('Date')
+
+#mengambil data sebagai data test
+test = ['ADRO','ARTO','MEDC','GOTO','BBCA']
+new_df_2[test]
+
+#Hitung covarians
+from pypfopt.expected_returns import mean_historical_return
+from pypfopt.risk_models import CovarianceShrinkage
+
+
+mu = mean_historical_return(new_df_2[test])
+S = CovarianceShrinkage(new_df_2[test]).ledoit_wolf()
+
+#menghitung efficient dan weight saham
+from pypfopt.efficient_frontier import EfficientFrontier
+
+ef = EfficientFrontier(mu, S)
+weights = ef.max_sharpe()
+
+cleaned_weights = ef.clean_weights()
+print(dict(cleaned_weights))
+weights
+
+#menghitung performance portofolio
+ef.portfolio_performance(verbose=True)
+
+#menghitung alokasi 
+from pypfopt.discrete_allocation import DiscreteAllocation, get_latest_prices
+
+latest_prices = get_latest_prices(new_df_2)
+
+da = DiscreteAllocation(weights, latest_prices, total_portfolio_value=500000000)
+
+allocation, leftover = da.greedy_portfolio()
+print("Discrete allocation:", allocation)
+print("Funds remaining: Rp{:.2f}".format(leftover))
+
+
+#Proses WOA
+new_df_2
+!pip install pyMetaheuristic
+
+#import library WOA
+import numpy as np
+from pyMetaheuristic.algorithm import whale_optimization_algorithm
+from pyMetaheuristic.utils import graphs
+
+#Return Value
+def return_value(mu, variables_values = [0,0,0,0,0]):
+  print(variables_values)
+  x1,x2,x3,x4,x5 = variables_values
+  func_value = x1*mu[0] + x2*mu[1] + x3*mu[2] + x4*mu[3] + x5*mu[4]
+  return func_value
+  
+  #Variance
+  def calculate_var(weights,sample_cov):
+  variance = 0
+  for i in range(len(new_df_2.columns)):
+    for j in range(len(new_df_2.columns)):
+      variance += weights[i]*weights[j]*sample_cov[i][j]
+  print(variance)
+  return variance
+  
+  #Parameter WOA
+parameters = {
+    'hunting_party': 150,
+    'min_values': (-5, -5),
+    'max_values': (5, 5),
+    'iterations': 500,
+    'spiral_param': 0.5,
+    'verbose': True
+}
+  
+  #import mean 
+  from pypfopt.expected_returns import mean_historical_return
+from pypfopt.risk_models import CovarianceShrinkage
+
+
+mu = mean_historical_return(new_df_2)
+S = CovarianceShrinkage(new_df_2).ledoit_wolf()
+
+#Testing
+testing = new_df_2[test].copy()
+from pypfopt.expected_returns import mean_historical_return
+from pypfopt.risk_models import CovarianceShrinkage
+
+mu = mean_historical_return(new_df_2)
+S = CovarianceShrinkage(new_df_2).ledoit_wolf()
+
+
+#Cov
+cov = S.values.tolist()
+
+from pypfopt import risk_models
+S = risk_models.sample_cov(new_df_2)
+S
+
+import numpy as np
+X = list()
+for it in range(150):
+  left = 1.0
+  x = list()
+  dim = len(new_df_2.columns)
+  for i in range(dim):
+    if(i<4):
+      x1 = random.uniform(0,left)
+      x.append(x1)
+      left = left-x1
+    else:
+      x.append(left)
+  X.append(x)
+X
+
+#Target Fuction
+sample_returns = new_df_2.rolling(window=2).apply(lambda x: x[1]/x[0]-1).iloc[1:]
+sample_cov = np.cov(sample_returns.values.T)
+
+
+
+  # Target Function: Easom Function
+def easom(variables_values = [0,0]):
+    x1, x2     = variables_values
+    func_value = -np.cos(x1) * np.cos(x2) * np.exp(-(x1 - np.pi) ** 2 - (x2 - np.pi) ** 2)
+    return func_value
+
+def return_value(variables_values = [0,0]):
+  x1,x2 = variables_values
+  func_value = mu[0]+x1* + x2*mu[1]
+  return func_value
+  
+  # WOA - Algorithm
+woa = whale_optimization_algorithm(target_function = return_value, **parameters)
+
+# WOA - Solution
+variables = woa[:-1]
+minimum   = woa[ -1]
+print('Variables: ', np.around(variables, 4) , ' Minimum Value Found: ', round(minimum, 4) )
+
+
+
+  
