@@ -1,0 +1,55 @@
+#import library
+from random import random
+from random import randint
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+import statistics
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.naive_bayes import BernoulliNB
+from sklearn.metrics import confusion_matrix
+from mlxtend.plotting import plot_decision_regions
+
+#upload data
+from google.colab import files
+uploaded = files.upload()
+
+#read data
+import io
+df = pd.read_csv(io.BytesIO(uploaded['diabetesuas (2).csv']))
+df
+# Dataset is now stored in a Pandas Dataframe
+
+#Read data teratas
+X = df.iloc[:,:8].values
+y = df['Outcome'].values
+df.head(5)
+
+#data dibagi jadi 2 bagian
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.4)
+
+#proses klasifikasi
+from sklearn.naive_bayes import BernoulliNB
+classifier = BernoulliNB()
+classifier.fit(X_train, y_train)
+
+#data prediksi
+y_pred = classifier.predict(X_test) 
+y_pred
+
+#matriks confusion
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test, y_pred)
+from sklearn.metrics import accuracy_score 
+print ("Accuracy : ", accuracy_score(y_test, y_pred))
+cm
+
+#membadingkan hasil real dan prediksi
+df = pd.DataFrame({'Real Values':y_test, 'Predicted Values':y_pred})
+df
+
+#plot hasil
+sns.distplot(a=X_train, hist = True, kde = True, rug = False)
