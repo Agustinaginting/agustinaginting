@@ -1,0 +1,21 @@
+# Import library stack dan queue
+from collections import deque
+
+# Buat stack kosong
+stack = deque()
+
+# Masukkan alamat web ke dalam stack dan queue
+stack.append("http://www.ui.ac.id/")
+stack.append("https://emas2.ui.ac.id/")
+stack.append("https://ovis.ui.ac.id/")
+
+# Tampilkan alamat web saat ini
+print("Alamat web pertama:", stack[-3])
+print("Alamat web kedua:", stack[-2])
+print("Alamat web ketiga:", stack[-1])
+
+#Tampilan alamat web setalah dua kali browsing dan previous satu kali kemudian satu kali forward
+print("Tampilan alamat web setelah dua kali browsing dan previous satu kali kemudian satu kali forward", stack[-2+1-1])
+#Tampilan alamat web setelah satu kali browsing dan previous satu kali
+print("Tidak dapat melakukan proses previous karna ini alamat web pertama yang dikunjungi", stack[-1+1])
+#Tampilan alamat web setelah tiga kali browsing dan satu kali forward
