@@ -1,0 +1,76 @@
+import numpy as np
+from PIL import Image
+import matplotlib.pyplot as plt
+import os
+
+source = Image.open(requests.get("https://drive.google.com/drive/folders/1ZQnroxdZL0YGunOBo2M4tcBervFcRHKy?usp=share_link")
+
+def rgb2gray(rgb):
+    return np.dot(rgb[...,:3], [0.2989, 0.5870, 0.1140])
+
+A = list()
+#Read all images
+for image in os.listdir(source):
+    img = plt.imread(os.path.join(source,image)) #Read an image
+    img = rgb2gray(img/255) #Convert to Grayscale and change the domain to [0,1]
+    img = img.flatten() #Flatten the pixels from 2d to 1d
+    A.append(img)
+A = np.array(A).T #Convert the shape from (24,4096) to (4096,24)
+A.shape
+
+from google.colab import drive
+drive.mount('/content/drive')
+
+#Create the centered matrix of A (Xi-E(Xi) where i=index of feature) 
+A_centered = A - np.repeat([A.mean(axis=1)],repeats=A.shape[1],axis=0).T
+A_centered.shape
+
+#Find SVD of centered A
+u,s,v = np.linalg.svd(A_centered)
+
+#Find B -> Transformation of A which has diagonal covariance matrix
+B_centered = np.dot(u.T,A_centered)
+#Check if B has diagonal covariance matrix
+B_cov = np.round(np.cov(B_centered),4)
+print('Total of non-zero in non-diagonal of B: ',np.count_nonzero(B_cov - np.diag(np.diagonal(B_cov))))
+
+
+s_matrix = np.zeros((A.shape[0],A.shape[1]),float)
+np.fill_diagonal(s_matrix,s)
+#Find the eigenvalues
+eig_val = np.diagonal(np.dot(s_matrix,s_matrix.T))
+#Take axes which variance is significant (eig_val >= 0.1)
+chosen_axes = (eig_val>=0.1)
+print('Total of chosen axes: ',chosen_axes.sum())
+
+#Create new B -> feature = eigenvector axis, data = data projected on eigenvector axis
+new_B_centered = np.dot(u[:,chosen_axes].T,A_centered) 
+new_B_centered.shape
+
+#B is in eigenspace, we must transform it back to input space
+new_A_centered = np.dot(u[:,chosen_axes],new_B_centered)
+new_A_centered.shape
+
+#Change centered back to [0,1] domain
+new_A = new_A_centered + np.repeat([A.mean(axis=1)],repeats=A.shape[1],axis=0).T
+new_A.shape
+
+for img in new_A.T:
+    new_img = img.reshape(64,64)
+    plt.imshow(new_img,cmap='gray')
+    break
+    
+#Calculate the MRE
+def norm_l2(x):
+    accu = 0
+    for e in x.squeeze():
+        accu += e**2
+    return np.sqrt(accu)
+def mre(xt,x):
+    k = accu = 0
+    for _xt,_x in zip(xt,x):
+        accu += (norm_l2(_xt-_x)/norm_l2(_x))
+        k += 1
+    return accu/k
+
+print('MRE: ',mre(A.T,new_A.T))
