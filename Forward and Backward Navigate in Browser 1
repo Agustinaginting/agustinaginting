@@ -1,0 +1,132 @@
+# Python3 program for the above approach
+ 
+# Stores the current
+# visiting page
+current_state_url = " "
+  
+# Stores url when pressed forward
+forward_stack = []
+  
+# Stores url when pressed backward
+backward_stack = []   
+  
+# Function for when visit a url
+def visit_new_url(url):
+  global current_state_url
+   
+  # If current URL is empty
+  if (current_state_url != ""):
+    # Push into backward_stack
+    backward_stack.append(current_state_url)
+  
+  # Set curr_state_url to url
+  current_state_url = url
+  
+# Function to handle state
+# when the forward button
+# is pressed
+def forward():
+  # If current url is the last url
+  if (len(forward_stack) == 0 or current_state_url == forward_stack[-1]):
+    print("Not Available")
+    return
+  
+  # Otherwise
+  else:
+    # Push current state to the
+    # backward stack
+    backward_stack.append(current_state_url)
+  
+    # Set current state to top
+    # of forward stack
+    current_state_url2 = forward_stack[-1]
+  
+    # Remove from forward
+    # stack
+    forward_stack.pop()
+  
+# Function to handle state
+# when the backward button
+# is pressed
+def backward():
+  # If current url is the
+  # last url
+  if (len(backward_stack) != 0 or current_state_url == backward_stack[-1]):
+    print("Not Available")
+    return
+  
+  # Otherwise
+  else:
+    # Push current url to the
+    # forward stack
+    forward_stack.append(current_state_url)
+  
+    # Set current url to top
+    # of backward stack
+    current_state_url = backward_stack[-1]
+  
+    # Pop it from backward
+    # stack
+    backward_stack[-1]
+  
+# Function that performs the
+# process of pressing forward
+# and backward button in a
+# Browser
+
+
+def simulatorFunction():
+  # Current URL
+  url = "http://www.ui.ac.id/"
+
+   # Print the current URL
+  print("Current URL is: " ,url)
+  
+  # Visit the current URL
+  visit_new_url(url)
+    
+  # New current URL
+  url = "https://emas2.ui.ac.id/"
+  
+  # Visit the current URL
+  visit_new_url(url)
+
+  # Print the current URL
+  print("Current URL is: " ,current_state_url)
+
+  # New current URL
+  url = "https://ovis.ui.ac.id/"
+  
+  # Visit the current URL
+  visit_new_url(url)
+  
+  # Print the current URL
+  print("Current URL is: " ,current_state_url)
+  
+  
+  # Pressed backward button
+  backward()
+  
+  # Print the current URL
+  print("Current URL after pressing" + " Backward button is: " , current_state_url)
+  
+  # Pressed forward button
+  forward()
+  
+  # Print the current URL
+  print("Current URL after pressing" + " Forward button is: " ,current_state_url)
+  
+  # Pressed forward button
+  forward()
+  
+  # Print the current URL
+  print("Current URL after pressing" + " Forward button is: " ,current_state_url)
+  # Pressed backward button
+  backward()
+  
+  # Print the current URL
+  print("Current URL after pressing" + " Backward button is: " ,current_state_url)
+   
+# Function to simulate process of
+# pressing forward & backward button
+simulatorFunction()
