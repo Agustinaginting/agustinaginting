@@ -1,0 +1,83 @@
+!pip install pyspark
+!pip install -U -q PyDrive
+!apt install openjdk-8-jdk-headless -qq
+import os
+os.environ["JAVA_HOME"] = "/usr/lib/jvm/java-8-openjdk-amd64"
+
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
+from google.colab import auth
+from oauth2client.client import GoogleCredentials
+
+# Authenticate and create the PyDrive client
+auth.authenticate_user()
+gauth = GoogleAuth()
+gauth.credentials = GoogleCredentials.get_application_default()
+drive = GoogleDrive(gauth)
+
+id='1dhi1F78ssqR8gE6U-AgB80ZW7V_9snX4'
+downloaded = drive.CreateFile({'id': id})
+downloaded.GetContentFile('products.csv')
+
+id='1KZBNEaIyMTcsRV817us6uLZgm-Mii8oU'
+downloaded = drive.CreateFile({'id': id})
+downloaded.GetContentFile('order_products__train.csv')
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+import pyspark
+from pyspark.sql import *
+from pyspark.sql.functions import *
+from pyspark import SparkContext, SparkConf
+
+# create the session
+conf = SparkConf().set("spark.ui.port", "4050")
+
+# create the context
+sc = pyspark.SparkContext(conf=conf)
+spark = SparkSession.builder.getOrCreate()
+
+spark
+
+!wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+!unzip ngrok-stable-linux-amd64.zip
+get_ipython().system_raw('./ngrok http 4050 &')
+!curl -s http://localhost:4040/api/tunnels | python3 -c \
+    "import sys, json; print(json.load(sys.stdin)['tunnels'][0]['public_url'])"
+    
+ products = spark.read.csv('products.csv', header=True, inferSchema=True)
+orders = spark.read.csv('order_products__train.csv', header=True, inferSchema=True)
+
+# Let see the Schema of Product Data Frame
+products.printSchema()
+
+# Let see the Schema of Orders Data Frame
+orders.printSchema()
+
+transaction = orders.join(products, on='product_id').groupby('order_id').agg(collect_list('product_name').alias('products'))
+transaction.take(5)
+
+# Let see the Schema of Transaction Data Frame
+transaction.printSchema()
+
+# Importing the Frequent pattern minning library
+from pyspark.ml.fpm import FPGrowth
+
+fpGrowth = FPGrowth(itemsCol="products", minSupport=0.01, minConfidence=0.5)
+# Creating the FPM model
+model = fpGrowth.fit(transaction)
+
+model.freqItemsets.show()
+model.associationRules.show()
+
+# YOUR CODE HERE
+fpGrowth = FPGrowth(itemsCol="products", minSupport=0.001, minConfidence=0.5)
+model = fpGrowth.fit(transaction)
+model.freqItemsets.show()
+model.associationRules.show()
+
+# stoping Spark Environment
+sc.stop()
