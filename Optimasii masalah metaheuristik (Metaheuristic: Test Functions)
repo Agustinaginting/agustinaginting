@@ -1,0 +1,382 @@
+!pip install pyMetaheuristic
+# Required Libraries
+from pyMetaheuristic.test_function import single
+from pyMetaheuristic.utils import graphs
+
+# Function: Ackley. Solution -> f(x1, x2) = 0; (x1, x2) = (0, 0). Domain -> -5 <= x1, x2 <= 5
+tf = single.ackley
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-5, -5),
+    'max_values': (5, 5),
+    'step': (0.05, 0.05),
+    'solution': [(0, 0)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: Axis Parallel Hyper-Ellipsoid. Solution -> f(xi) = 0; xi = 0. Domain -> -5.12 <= xi <= 5.12
+tf = single.axis_parallel_hyper_ellipsoid
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-5.12, -5.12),
+    'max_values': (5.12, 5.12),
+    'step': (0.1, 0.1),
+    'solution': [(0, 0)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: Beale. Solution -> f(x1, x2) = 0; (x1, x2) = (3, 0.5). Domain -> -4.5 <= x1, x2 <= 4.5
+tf = single.beale
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-4.5, -4.52),
+    'max_values': (4,5, 4.5),
+    'step': (0.1, 0.1),
+    'solution': [(3, 0.5)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+
+# Function: Bohachevsky F1. Solution -> f(x1, x2) = 0; (x1, x2) = (0, 0). Domain -> -100 <= x1, x2 <= 100
+tf = single.bohachevsky_1
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-100, -100),
+    'max_values': (100, 100),
+    'step': (1, 1),
+    'solution': [(0, 0)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+
+# Function: Bohachevsky F2. Solution -> f(x1, x2) = 0; (x1, x2) = (0, 0). Domain -> -100 <= x1, x2 <= 100
+tf = single.bohachevsky_2
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-100, -100),
+    'max_values': (100, 100),
+    'step': (1, 1),
+    'solution': [(0, 0)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: Bohachevsky F3. Solution -> f(x1, x2) = 0; (x1, x2) = (0, 0). Domain -> -100 <= x1, x2 <= 100
+tf = single.bohachevsky_3
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-100, -100),
+    'max_values': (100, 100),
+    'step': (1, 1),
+    'solution': [(0, 0)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+
+# Function: Zakharov. Solution -> f(xi) = 0; xi = 0. Domain -> -5 <= xi <= 10
+tf = single.zakharov
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-5, -5),
+    'max_values': (10, 10),
+    'step': (0.1, 0.1),
+    'solution': [(0, 0)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: Three Hump Camel Back. Solution -> f(x1, x2) = 0; (x1, x2) = (0, 0). Domain -> -5 <= x1, x2 <= 5
+tf = single.three_hump_camel_back
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-5, -5),
+    'max_values': (5, 5),
+    'step': (0.1, 0.1),
+    'solution': [(0, 0)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: Styblinski-Tang. Solution -> f(xi) = -39.16599*number_of_variables; xi = -2.903534. Domain -> -5 <= xi <= 5
+tf = single.styblinski_tang
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-5, -5),
+    'max_values': (5, 5),
+    'step': (0.1, 0.1),
+    'solution': [(-2.903534, -2.903534)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+
+# Function: Six Hump Camel Back. Solution -> f(x1, x2) = -1.0316; (x1, x2) = (0.0898, -0.7126) or (-0.0898, 0.7126). Domain -> -3 <= x1 <= 3; -2 <= x2 <= 2
+tf = single.six_hump_camel_back
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-3, -2),
+    'max_values': (3, 2),
+    'step': (0.1, 0.1),
+    'solution': [(0.0898, -0.7126), (-0.0898, 0.7126)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+
+# Function: Schwefel. Solution -> f(x) = 0; xi = 420.9687. Domain -> -500 <= xi <= 500
+tf = single.schwefel
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-500, -500),
+    'max_values': (500, 500),
+    'step': (5, 5),
+    'solution': [(420.9687, 420.9687)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: Schaffer F6. Solution -> f(x1, x2) = 0; (x1, x2) = (0, 0). Domain -> -100 <= x1, x2 <= 100
+tf = single.schaffer_6
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-100, -100),
+    'max_values': (100, 100),
+    'step': (1, 1),
+    'solution': [(0, 0)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: Schaffer F4. Solution -> f(x1, x2) = 0.292579; (x1, x2) = (0, 1.25313) or (0, -1.25313) or (1.25313, 0) or (-1.25313, 0). Domain -> -100 <= x1, x2 <= 100
+tf = single.schaffer_4
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-100, -100),
+    'max_values': (100, 100),
+    'step': (1, 1),
+    'solution': [(0, 1.25313), (0, -1.25313), (1.25313, 0), (-1.25313, 0)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: Schaffer F2. Solution -> f(x1, x2) = 0; (x1, x2) = (0, 0). Domain -> -100 <= x1, x2 <= 100
+tf = single.schaffer_2
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-100, -100),
+    'max_values': (100, 100),
+    'step': (1, 1),
+    'solution': [(0, 0)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: Rosenbrocks Valley (De Jong F2). Solution -> f(xi) = 0; xi = 1. Domain -> -inf<= xi <= +inf
+tf = single.rosenbrocks_valley
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-5, -5),
+    'max_values': (5, 5),
+    'step': (0.1, 0.1),
+    'solution': [(1, 1)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: Rastrigin. Solution -> f(xi) = 0; xi = 0. Domain -> -5.12 <= xi <= 5.12
+tf = single.rastrigin
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-5.12, -5.12),
+    'max_values': (5.12, 5.12),
+    'step': (0.1, 0.1),
+    'solution': [(0, 0)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: Lévi F13. Solution -> f(x1, x2) = 0; (x1, x2) = (1, 1). Domain -> -10 <= x1, x2 <= 10
+tf = single.levi_13
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-10, -10),
+    'max_values': (10, 10),
+    'step': (0.1, 0.1),
+    'solution': [(1, 1)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: McCormick. Solution -> f(x1, x2) = -1.9133; (x1, x2) = (-0.54719, -1.54719). Domain -> -1.5 <= x1 <= 4; -3 <= x2 <= 4
+tf = single.mccormick
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-1.5, -3),
+    'max_values': (4, 4),
+    'step': (0.05, 0.05),
+    'solution': [(-0.54719, -1.54719)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: Matyas. Solution -> f(x1, x2) = 0; (x1, x2) = (0, 0). Domain -> -10 <= x1, x2 <= 10
+tf = single.matyas
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-10, -10),
+    'max_values': (10, 10),
+    'step': (0.1, 0.1),
+    'solution': [(0, 0)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: Himmelblau. Solution -> f(x1, x2) = 0; (x1, x2) = (3, 2) or (-2.805118, 3.131312) or (-3.779310, -3.283186) or (3.584428 ,-1.848126). Domain -> -5 <= x1, x2 <= 5
+tf = single.himmelblau
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-5, -5),
+    'max_values': (5, 5),
+    'step': (0.1, 0.1),
+    'solution': [(3, 2), (-2.805118, 3.131312), (-3.779310, -3.283186), (3.584428 ,-1.848126)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: Griewangk F8. Solution -> f(xi) = 0; xi = 0. Domain -> -600 <= xi <= 600
+tf = single.griewangk_8
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-600, -600),
+    'max_values': (600, 600),
+    'step': (5, 5),
+    'solution': [(0, 0)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: Goldstein-Price. Solution -> f(x1, x2) = 3; (x1, x2) = (0, -1). Domain -> -2 <= x1, x2 <= 2
+tf = single.goldstein_price
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-2, -2),
+    'max_values': (2, 2),
+    'step': (0.05, 0.05),
+    'solution': [(0, -1)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: Eggholder. Solution -> f(x1, x2) = -959.6407; (x1, x2) = (512, 404.2319). Domain -> -512 <= x1, x2 <= 512
+tf = single.eggholder
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-512, -512),
+    'max_values': (512, 512),
+    'step': (5, 5),
+    'solution': [(512, 404.2319)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: Drop Wave. Solution -> f(x1, x2) = -1; (x1, x2) = (0, 0). Domain -> -5.12 <= xi <= 5.12
+tf = single.drop_wave
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-5.12, -5.12),
+    'max_values': (5.12, 5.12),
+    'step': (0.1, 0.1),
+    'solution': [(0, 0)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: De Jong F1. Solution -> f(xi) = 0; xi = 0. Domain -> -5.12 <= xi <= 5.12
+tf = single.de_jong_1
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-5.12, -5.12),
+    'max_values': (5.12, 5.12),
+    'step': (0.1, 0.1),
+    'solution': [(0, 0)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+# Function: Cross in Tray. Solution -> f(x1, x2) = -2.06261; (x1, x2) = (1.34941, 1.34941) or (-1.34941, 1.34941) or (1.34941, -1.34941) or (-1.34941, -1.34941). Domain -> -10 <= x1, x2 <= 10
+tf = single.cross_in_tray
+
+# Target Function - 2D Plot 
+plot_parameters = {
+    'min_values': (-10, -10),
+    'max_values': (10, 10),
+    'step': (0.1, 0.1),
+    'solution': [(1.34941, 1.34941), (-1.34941, 1.34941), (1.34941, -1.34941), (-1.34941, -1.34941)],
+    'proj_view': '2D',
+    'view': 'notebook'
+}
+graphs.plot_single_function(target_function = tf, **plot_parameters)
+
+
+
+
+
+
